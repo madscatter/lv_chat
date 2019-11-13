@@ -1,0 +1,37 @@
+<h1>Show Board</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @board.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @board.description %>
+  </li>
+
+</ul>
+
+<div class="form-group">
+  <%= f = form_for @comment, "#", [phx_submit: :add_comment, phx_change: :typing] %>
+    <%= text_input f, :body, phx_blur: "stop_typing" %>
+    <%= submit "Send" %>
+  </form>
+</div>
+<div id="msg-container" phx-update="replace" style="height: 200px; overflow-y: scroll;" phx-hook="NewComment">
+  <ul style="list-style: none;">
+  <%= for comment <- @comments do %>
+    <li id="<%= comment.id %>"><%= comment.user.name %> :  <%= comment.body %> </li>
+  <% end %>
+</ul>
+</div>
+
+<h3>Users</h3>
+<ul id="user-container">
+<%= for user <- @users do %>
+  <li id="<%= user.phx_ref %>"><%= user.name %><%= if user.typing, do: "(typing...)" %></li>
+<% end %>
+</ul>
+　
